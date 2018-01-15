@@ -1,0 +1,141 @@
+0.3
+-------------
+
+kayttaja->selain:
+note left of selain
+kayttaja klikkaa linkkiä "muistiinpanot"
+fullstack-exampleapp.herokuapp.com/notes
+end note
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/notes
+note left of palvelin
+  muistiinpanosivun pohja tulee palvelimelta, 
+  mutta se ei sisällä itse muistiinpanoja
+end note
+palvelin->selain: status 200, sivun HTML-koodi
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.css
+note left of palvelin
+  selain parsii saatua html-tiedostoa 
+  ja hakee siihen liittyvän tyylitiedoston
+end note
+palvelin->selain: status 200, tyylitiedosto /notes -sivulle
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.js
+note left of palvelin
+  selain törmää javascript tagiin 
+  ja lataa siihen liittyvän skriptin palvelimelta
+end note
+palvelin->selain: status 200, javascript-tiedosto
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/data.json
+
+note left of palvelin
+  selain suorittaa main.js-skriptin, joka 
+  aloittaa muistiinpanojen latauksen palvelimelta
+end note
+
+note left of selain
+ muistiinpanoja haettaessa selain näyttää vielä sivun 
+ css-tyyleineen ilman muistiinpanoja
+end note
+palvelin->selain: status 200, json-tiedosto
+
+note left of selain
+ jsonin mukana tulleet muistiinpanot liitetään käyttäjän 
+ sivuun callback-funktiolla jota kutsutaan kun lataus on valmis
+end note
+
+0.4
+-------------
+
+
+kayttaja->selain:
+note left of selain
+kayttaja kirjoittaa uuden muistiinpanon ja klikkaa "Talleta"
+end note
+selain->palvelin: POST fullstack-exampleapp.herokuapp.com/new_note
+note left of palvelin
+  selain lähettää muistiinpanon http-kutsun bodyssä,
+  palvelin tallentaa datan ja palauttaa uudelleenohjauksen
+end note
+palvelin->selain: status 302, uudelleenohjaus /notes
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/notes
+note left of palvelin
+  selain tekee uudelleenohjauksen mukaisesti uuden GET-kutsun palvelimelle
+end note
+
+palvelin->selain: status 200, /notes html
+
+note left of selain
+  selain näyttää sivun uusine muistiinpanoineen
+end note
+
+
+0.5
+-------------
+
+
+kayttaja->selain:
+note left of selain
+kayttaja menee osoitteeseen 
+https://fullstack-exampleapp.herokuapp.com/spa
+end note
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/spa
+note left of palvelin
+  muistiinpanosivun pohja tulee palvelimelta, 
+  mutta se ei sisällä itse muistiinpanoja
+end note
+palvelin->selain: status 200, sivun HTML-koodi
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.css
+note left of palvelin
+  selain parsii saatua html-tiedostoa 
+  ja hakee siihen liittyvän tyylitiedoston
+end note
+palvelin->selain: status 200, tyylitiedosto /notes -sivulle
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/spa.js
+note left of palvelin
+  selain törmää javascript tagiin 
+  ja lataa siihen liittyvän skriptin palvelimelta
+end note
+palvelin->selain: status 200, javascript-tiedosto
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/data.json
+
+note left of palvelin
+  selain suorittaa spa.js-skriptin, joka 
+  aloittaa muistiinpanojen latauksen palvelimelta
+end note
+
+note left of selain
+ muistiinpanoja haettaessa selain näyttää vielä sivun 
+ css-tyyleineen ilman muistiinpanoja
+end note
+palvelin->selain: status 200, json-tiedosto
+
+note left of selain
+ jsonin mukana tulleet muistiinpanot liitetään käyttäjän 
+ sivuun callback-funktiolla jota kutsutaan kun lataus on valmis
+end note
+
+
+0.6
+-------------
+
+kayttaja->selain:
+note left of selain
+kayttaja kirjoittaa uuden muistiinpanon ja klikkaa "Talleta"
+end note
+
+note left of selain
+  selain liittää muistiinpanon lokaalisti sivulle
+end note
+selain->palvelin: POST fullstack-exampleapp.herokuapp.com/new_note
+note left of palvelin
+  selain lähettää muistiinpanon XMLHttp-kutsussa palvelimelle
+end note
+palvelin->selain: status 201 created, json
+note left of palvelin
+  palvelin palauttaa jsonissa viestin, joka ilmoittaa että lisäys onnistui
+end note
