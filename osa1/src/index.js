@@ -2,6 +2,37 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 
+const Button = (props) => (
+    <button onClick={props.onClick}>
+        {props.text}
+    </button>
+)
+
+const Statistic = (props) => ([
+    <span>{props.name}: {props.value}</span>,
+    <br/>
+])
+
+const Statistics = (props) => {
+    const { hyva, neutraali, huono } = props
+    const yhteensa = hyva + neutraali + huono
+    const keskiarvo = (hyva - huono) / yhteensa
+    const positiivisia = hyva / yhteensa
+
+    return (
+        <div>
+            <h1>statistiikka</h1>
+            <div>
+                <Statistic name="hyvä" value={hyva} />
+                <Statistic name="neutraali" value={neutraali} />
+                <Statistic name="huono" value={huono} />
+                <Statistic name="keskiarvo" value={keskiarvo.toFixed(1)} />
+                <Statistic name="positiivisia" value={(positiivisia * 100).toFixed(1) + '%'} />
+            </div>
+        </div>
+    )
+}
+
 class App extends Component {
     constructor () {
         super();
@@ -14,27 +45,14 @@ class App extends Component {
 
     render () {
         const { hyva, neutraali, huono } = this.state
-        const yhteensa = hyva + neutraali + huono
-        const keskiarvo = (hyva - huono) / yhteensa
-        const positiivisia = hyva / yhteensa
-
 
         return (
             <div>
                 <h1>anna palautetta</h1>
-                <button onClick={() => this.setState({hyva: hyva + 1})}>hyvä</button>
-                <button onClick={() => this.setState({neutraali: neutraali + 1})} >neutraali</button>
-                <button onClick={() => this.setState({huono: huono + 1})}>huono</button>
-
-                <h1>statistiikka</h1>
-                <p>
-                    hyvä: {hyva} <br/>
-                    neutraali: {neutraali} <br/>
-                    huono: {huono} <br/>
-                    keskiarvo: {keskiarvo.toFixed(2)} <br/>
-                    positiivisia: {(positiivisia * 100).toFixed(1)}% <br/>
-                </p>
-
+                <Button onClick={() => this.setState({hyva: hyva + 1})} text="hyvä" />
+                <Button onClick={() => this.setState({neutraali: neutraali + 1})} text="neutraali" />
+                <Button onClick={() => this.setState({huono: huono + 1})} text="huono" />
+                <Statistics hyva={hyva} neutraali={neutraali} huono={huono} />
             </div>
         )
     }
