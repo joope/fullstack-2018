@@ -16,20 +16,22 @@ const Statistic = (props) => (
 
 const Statistics = (props) => {
     const { hyva, neutraali, huono } = props
+
+    if (hyva + neutraali + huono === 0) {
+        return (<p>yhtään palautetta ei ole annettu</p>)
+    }
+
     const yhteensa = hyva + neutraali + huono
     const keskiarvo = (hyva - huono) / yhteensa
     const positiivisia = hyva / yhteensa
 
     return (
         <div>
-            <h1>statistiikka</h1>
-            <div>
-                <Statistic name="hyvä" value={hyva} />
-                <Statistic name="neutraali" value={neutraali} />
-                <Statistic name="huono" value={huono} />
-                <Statistic name="keskiarvo" value={keskiarvo.toFixed(1)} />
-                <Statistic name="positiivisia" value={(positiivisia * 100).toFixed(1) + '%'} />
-            </div>
+            <Statistic name="hyvä" value={hyva} />
+            <Statistic name="neutraali" value={neutraali} />
+            <Statistic name="huono" value={huono} />
+            <Statistic name="keskiarvo" value={keskiarvo.toFixed(1)} />
+            <Statistic name="positiivisia" value={(positiivisia * 100).toFixed(1) + '%'} />
         </div>
     )
 }
@@ -53,6 +55,7 @@ class App extends Component {
                 <Button onClick={() => this.setState({hyva: hyva + 1})} text="hyvä" />
                 <Button onClick={() => this.setState({neutraali: neutraali + 1})} text="neutraali" />
                 <Button onClick={() => this.setState({huono: huono + 1})} text="huono" />
+                <h1>statistiikka</h1>
                 <Statistics hyva={hyva} neutraali={neutraali} huono={huono} />
             </div>
         )
