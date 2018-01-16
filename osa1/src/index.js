@@ -1,72 +1,41 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-
-const Button = (props) => (
-    <button onClick={props.handleClick}>
-        {props.text}
-    </button>
-)
-
-const Statistic = (props) => (
-    <tr>
-        <td>{props.name}:</td> 
-        <td>{props.value}</td>
-    </tr>
-)
-
-const Statistics = ({ hyva, neutraali, huono }) => {
-
-    if (hyva + neutraali + huono === 0) {
-        return <p>yhtään palautetta ei ole annettu</p>
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      selected: 0
     }
+  }
 
-    const yhteensa = hyva + neutraali + huono
-    const keskiarvo = (hyva - huono) / yhteensa
-    const positiivisia = hyva / yhteensa
+  selectNewAnecdote = () => {
+      const { anecdotes } = this.props
+      const newSelection = Math.floor(Math.random() * anecdotes.length)
+      this.setState({selected: newSelection})
+  }
 
+  render() {
     return (
-        <table>
-            <tbody>
-                <Statistic name="hyvä" value={hyva} />
-                <Statistic name="neutraali" value={neutraali} />
-                <Statistic name="huono" value={huono} />
-                <Statistic name="keskiarvo" value={keskiarvo.toFixed(1)} />
-                <Statistic name="positiivisia" value={(positiivisia * 100).toFixed(1) + '%'} />
-            </tbody>
-        </table>
+      <div>
+        {this.props.anecdotes[this.state.selected]}
+        <br/>
+        <button onClick={this.selectNewAnecdote}>new anectdote</button>
+      </div>
     )
+  }
 }
 
-class App extends Component {
-    constructor () {
-        super();
-        this.state = {
-            hyva: 0,
-            neutraali: 0,
-            huono: 0
-        }
-    }
+const anecdotes = [
+  'If it hurts, do it more often',
+  'Adding manpower to a late software project makes it later!',
+  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+  'Premature optimization is the root of all evil.',
+  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
+]
 
-    palaute = (tyyppi) => () => 
-        this.setState((prevState) => ({
-            [tyyppi]: prevState[tyyppi] + 1
-        }));
-
-    render () {
-        const { hyva, neutraali, huono } = this.state
-
-        return (
-            <div>
-                <h1>anna palautetta</h1>
-                <Button handleClick={this.palaute('hyva')} text="hyvä" />
-                <Button handleClick={this.palaute('neutraali')} text="neutraali" />
-                <Button handleClick={this.palaute('huono')} text="huono" />
-                <h1>statistiikka</h1>
-                <Statistics hyva={hyva} neutraali={neutraali} huono={huono} />
-            </div>
-        )
-    }
-}
-
-ReactDOM.render(<App/>, document.getElementById('root'))
+ReactDOM.render(
+  <App anecdotes={anecdotes} />,
+  document.getElementById('root')
+)
