@@ -1,58 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-const Otsikko = (props) => (
-    <h1>{props.kurssi}</h1>
-)
 
-const Sisalto = (props) => {
-    const osat = props.osat;
-    return (
-        <div>
-            <Osa osa={osat[0]} />
-            <Osa osa={osat[1]} />
-            <Osa osa={osat[2]} />
-        </div>
-    )
-    
-}
-const Yhteensa = (props) => {
-    const osat = props.osat;
-    return (
-        <p>yhteensä {osat[0].tehtavia + osat[1].tehtavia + osat[2].tehtavia} tehtävää</p>
-    )
-}
-
-const Osa = (props) => (
-    <p>{props.osa.nimi} {props.osa.tehtavia}</p>
-)
-
-const App = () => {
-    const kurssi = {
-        nimi: 'Half Stack -sovelluskehitys',
-        osat: [
-            {
-                nimi: 'Reactin perusteet',
-                tehtavia: 10
-            },
-            {
-                nimi: 'Tiedonvälitys propseilla',
-                tehtavia: 7
-            },
-            {
-                nimi: 'Komponenttien tila',
-                tehtavia: 14
-            }
-        ]
+class App extends Component {
+    constructor () {
+        super();
+        this.state = {
+            hyva: 0,
+            neutraali: 0,
+            huono: 0
+        }
     }
 
-    return (
-        <div>
-            <Otsikko kurssi={kurssi.nimi} />
-            <Sisalto osat={kurssi.osat}/>
-            <Yhteensa osat={kurssi.osat} />
-        </div>
-    )
+    render () {
+        const { hyva, neutraali, huono } = this.state;
+
+        return (
+            <div>
+                <h1>anna palautetta</h1>
+                <button onClick={() => this.setState({hyva: hyva + 1})}>hyvä</button>
+                <button onClick={() => this.setState({neutraali: neutraali + 1})} >neutraali</button>
+                <button onClick={() => this.setState({huono: hyva + 1})}>huono</button>
+
+                <h1>statistiikka</h1>
+                <p>
+                    hyvä: {hyva} <br/>
+                    neutraali: {neutraali} <br/>
+                    huono: {huono}
+                </p>
+
+            </div>
+        )
+    }
 }
 
 ReactDOM.render(<App/>, document.getElementById('root'))
