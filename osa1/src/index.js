@@ -46,15 +46,24 @@ class App extends Component {
         }
     }
 
+    palaute = (tyyppi) => {
+        return () => {
+            console.log(tyyppi)
+            this.setState((prevState) => ({
+                [tyyppi]: prevState[tyyppi] + 1
+            }));
+        }
+    }
+
     render () {
         const { hyva, neutraali, huono } = this.state
 
         return (
             <div>
                 <h1>anna palautetta</h1>
-                <Button onClick={() => this.setState({hyva: hyva + 1})} text="hyvä" />
-                <Button onClick={() => this.setState({neutraali: neutraali + 1})} text="neutraali" />
-                <Button onClick={() => this.setState({huono: huono + 1})} text="huono" />
+                <Button onClick={this.palaute('hyva')} text="hyvä" />
+                <Button onClick={this.palaute('neutraali')} text="neutraali" />
+                <Button onClick={this.palaute('huono')} text="huono" />
                 <h1>statistiikka</h1>
                 <Statistics hyva={hyva} neutraali={neutraali} huono={huono} />
             </div>
