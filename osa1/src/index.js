@@ -8,10 +8,11 @@ const Button = (props) => (
     </button>
 )
 
-const Statistic = (props) => ([
-    <span>{props.name}: {props.value}</span>,
-    <br/>
-])
+const Statistic = (props) => (
+    <div>
+        <span>{props.name}: {props.value}</span>
+    </div>
+)
 
 const Statistics = (props) => {
     const { hyva, neutraali, huono } = props
