@@ -1,6 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+const Anecdote = ({anecdote, votes}) => (
+    <div>
+        {anecdote} <br/>
+        has {votes} votes <br/>
+    </div>
+)
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -25,15 +32,35 @@ class App extends React.Component {
     });
   }
 
-  render() {
-    const { selected, votes } = this.state;
+  getMostVoted = () => {
+    const { votes } = this.state;
     const { anecdotes } = this.props;
+
+    let mostVotes = 0
+
+    votes.forEach((vote, index) => {
+        if (vote > votes[mostVotes]) {
+            mostVotes = index
+        }
+    })
+
+    return mostVotes
+  }
+
+  render() {
+    const { selected, votes } = this.state
+    const { anecdotes } = this.props
+    const mostVotes = this.getMostVoted()
+
+
     return (
       <div>
-        {anecdotes[selected]}<br/>
-        has {votes[selected]} votes <br/>
+        <Anecdote anecdote={anecdotes[selected]} votes={votes[selected]} />
         <button onClick={this.voteAnecdote}>vote</button>
         <button onClick={this.selectNewAnecdote}>new anectdote</button>
+
+        <h3>anecdote with most votes:</h3>
+        <Anecdote anecdote={anecdotes[mostVotes]} votes={votes[mostVotes]} />
       </div>
     )
   }
