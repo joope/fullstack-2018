@@ -3,22 +3,22 @@ import ReactDOM from 'react-dom';
 
 
 const Button = (props) => (
-    <button onClick={props.onClick}>
+    <button onClick={props.handleClick}>
         {props.text}
     </button>
 )
 
 const Statistic = (props) => (
-    <div>
-        <span>{props.name}: {props.value}</span>
-    </div>
+    <tr>
+        <td>{props.name}:</td> 
+        <td>{props.value}</td>
+    </tr>
 )
 
-const Statistics = (props) => {
-    const { hyva, neutraali, huono } = props
+const Statistics = ({ hyva, neutraali, huono }) => {
 
     if (hyva + neutraali + huono === 0) {
-        return (<p>yhtään palautetta ei ole annettu</p>)
+        return <p>yhtään palautetta ei ole annettu</p>
     }
 
     const yhteensa = hyva + neutraali + huono
@@ -26,13 +26,15 @@ const Statistics = (props) => {
     const positiivisia = hyva / yhteensa
 
     return (
-        <div>
-            <Statistic name="hyvä" value={hyva} />
-            <Statistic name="neutraali" value={neutraali} />
-            <Statistic name="huono" value={huono} />
-            <Statistic name="keskiarvo" value={keskiarvo.toFixed(1)} />
-            <Statistic name="positiivisia" value={(positiivisia * 100).toFixed(1) + '%'} />
-        </div>
+        <table>
+            <tbody>
+                <Statistic name="hyvä" value={hyva} />
+                <Statistic name="neutraali" value={neutraali} />
+                <Statistic name="huono" value={huono} />
+                <Statistic name="keskiarvo" value={keskiarvo.toFixed(1)} />
+                <Statistic name="positiivisia" value={(positiivisia * 100).toFixed(1) + '%'} />
+            </tbody>
+        </table>
     )
 }
 
@@ -46,14 +48,10 @@ class App extends Component {
         }
     }
 
-    palaute = (tyyppi) => {
-        return () => {
-            console.log(tyyppi)
-            this.setState((prevState) => ({
-                [tyyppi]: prevState[tyyppi] + 1
-            }));
-        }
-    }
+    palaute = (tyyppi) => () => 
+        this.setState((prevState) => ({
+            [tyyppi]: prevState[tyyppi] + 1
+        }));
 
     render () {
         const { hyva, neutraali, huono } = this.state
@@ -61,9 +59,9 @@ class App extends Component {
         return (
             <div>
                 <h1>anna palautetta</h1>
-                <Button onClick={this.palaute('hyva')} text="hyvä" />
-                <Button onClick={this.palaute('neutraali')} text="neutraali" />
-                <Button onClick={this.palaute('huono')} text="huono" />
+                <Button handleClick={this.palaute('hyva')} text="hyvä" />
+                <Button handleClick={this.palaute('neutraali')} text="neutraali" />
+                <Button handleClick={this.palaute('huono')} text="huono" />
                 <h1>statistiikka</h1>
                 <Statistics hyva={hyva} neutraali={neutraali} huono={huono} />
             </div>
