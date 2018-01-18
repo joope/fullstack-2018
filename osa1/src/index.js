@@ -34,7 +34,6 @@ class App extends React.Component {
 
   getMostVoted = () => {
     const { votes } = this.state;
-    const { anecdotes } = this.props;
 
     let mostVotes = 0
 
