@@ -6,9 +6,16 @@ const Kurssi = ({kurssi}) => {
     <div>
       <Otsikko otsikko={kurssi.nimi} />
       <Sisalto sisalto={kurssi.osat} />
+      <Maara osat={kurssi.osat} />
     </div>
   )
 }
+
+const Maara = ({osat}) => 
+  <p>
+    yhteensä {osat.reduce((yht, osa) => yht + osa.tehtavia, 0)}
+  </p>
+
 
 const Otsikko = ({otsikko}) => <h1>{otsikko}</h1>
 
@@ -31,7 +38,7 @@ const App = () => {
     osat: [
       {
         nimi: 'Reactin perusteet',
-        tehtavia: 10,
+        tehtavia: 20,
         id: 1
       },
       {
