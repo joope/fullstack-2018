@@ -21,7 +21,11 @@ class App extends Component {
     this.setState({ filter: event.target.value });
   }
 
-  filterCountries = (countries, filter) => (
+  selectCountry = (name) => {
+    return () => this.setState({filter: name});
+  }
+
+  filterCountries = (countries=[], filter='') => (
     countries.filter(
       country => country.name.toLowerCase().includes(filter.toLowerCase())
     )
@@ -44,7 +48,7 @@ class App extends Component {
         </div>
     } else if (filteredCountries.length <= 10){
       content = filteredCountries.map(country => 
-        <div key={country.name}>{country.name}</div>
+        <div key={country.name} onClick={this.selectCountry(country.name)}>{country.name}</div>
       )
     }
 
