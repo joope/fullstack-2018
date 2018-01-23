@@ -19,6 +19,9 @@ class App extends React.Component {
       .then(res => {
         this.setState({persons: res.data})
       })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   updateName = (event) => {
