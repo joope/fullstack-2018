@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -54,56 +55,88 @@ class App extends React.Component {
     this.setState({filter: event.target.value});
   }
 
-  filterPersons = (persons, filter) => 
-    persons.filter(person => 
-       person.name.toLowerCase().includes(filter.toLowerCase())
-    );
-
-  listPersons = (persons) => (
-    <table>
-      <tbody>
-      { persons.map(person => 
-        <tr key={person.name}>
-          <td>{person.name}</td>
-          <td>{person.number}</td>
-        </tr>
-      )}
-      </tbody>
-    </table>
-  )
-
   render() {
     const { persons, newName, newNumber, filter } = this.state;
     console.log(this.state)
 
-    const filteredList = (filter.length > 0) ?
-      this.filterPersons(persons, filter) :
-      persons
-    
-    const personList = this.listPersons(filteredList);
+
     
     return (
       <div>
-        <h2>Puhelinluettelo</h2>
-        rajaa näytettäviä <input onChange={this.handleFilter} />
-
-        <h3>Lisää uusi</h3>
-        <form onSubmit={this.handleNewPerson}>
-          <div>
-            nimi: <input value={newName} onChange={this.updateName}/>
-          </div>
-          <div>
-            numero: <input value={newNumber} onChange={this.updateNumber}/>
-          </div>
-          <div>
-            <button type="submit">lisää</button>
-          </div>
-        </form>
-        <h3>Numerot</h3>
-        { personList }
+        <Header name="Puhelinluettelo" />
+        <Input name='rajaa näytettäviä' onChange={this.handleFilter} />
+        <PersonForm 
+          newName={newName}
+          newNumber={newNumber}
+          handleNewPerson={this.handleNewPerson}
+          updateName={this.updateName}
+          updateNumber={this.updateNumber}
+        />
+        <PersonList persons={persons} filter={filter} />
       </div>
     )
   }
 }
+
+const Header = ({ name }) => (
+    <h1>{name}</h1>
+);
+
+const Input = ({ name, value, onChange }) => (
+  <div>
+    {name}: <input value={value} onChange={onChange} />
+  </div>
+);
+
+const SubmitButton = ({ name }) => (
+  <div>
+    <button type="submit">{name}</button>
+  </div>
+)
+
+const PersonForm = ({ 
+    newName, 
+    newNumber, 
+    handleNewPerson, 
+    updateName, 
+    updateNumber 
+  }) => (
+  <div>
+    <h3>Lisää uusi</h3>
+    <form onSubmit={handleNewPerson}>
+      <Input name='nimi' value={newName} onChange={updateName} />
+      <Input name='numero' value={newNumber} onChange={updateNumber} />
+      <SubmitButton name='lisää' />
+    </form>
+  </div>
+);
+
+const PersonTable = ({ persons }) => (
+  <table>
+    <tbody>
+    { persons.map(person => 
+      <tr key={person.name}>
+        <td>{person.name}</td>
+        <td>{person.number}</td>
+      </tr>
+    )}
+    </tbody>
+  </table>
+)
+
+const PersonList = ({ persons, filter }) => {
+
+  const filteredList = persons.filter(person => 
+    person.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return (
+    <div>
+      <h3>Numerot</h3>
+      <PersonTable persons={filteredList} />
+    </div>
+  );
+}
+
 
 export default App
