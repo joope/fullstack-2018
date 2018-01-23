@@ -80,7 +80,6 @@ class App extends React.Component {
       this.filterPersons(persons, filter) :
       persons
     
-    console.log(filteredList)
     const personList = this.listPersons(filteredList);
     
     return (
