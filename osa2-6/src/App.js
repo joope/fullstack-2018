@@ -12,7 +12,7 @@ class App extends React.Component {
       ],
       newName: '',
       newNumber: '',
-      query: ''
+      filter: ''
     }
   }
 
@@ -23,8 +23,7 @@ class App extends React.Component {
   updateNumber = (event) => {
     const number = Number.parseInt(event.target.value, 10);
     if (Number.isNaN(number)) return;
-
-    this.setState({newNumber: event.target.value})
+    this.setState({newNumber: number})
   }
 
   handleNewPerson = (event) => {
@@ -51,24 +50,45 @@ class App extends React.Component {
     )
   }
 
+  handleFilter = event => {
+    this.setState({filter: event.target.value});
+  }
+
+  filterPersons = (persons, filter) => 
+    persons.filter(person => 
+       person.name.toLowerCase().includes(filter.toLowerCase())
+    );
+
   listPersons = (persons) => (
     <table>
+      <tbody>
       { persons.map(person => 
-        <tr>
+        <tr key={person.name}>
           <td>{person.name}</td>
           <td>{person.number}</td>
         </tr>
       )}
+      </tbody>
     </table>
   )
 
   render() {
-    const { persons, newName, newNumber } = this.state;
+    const { persons, newName, newNumber, filter } = this.state;
     console.log(this.state)
+
+    const filteredList = (filter.length > 0) ?
+      this.filterPersons(persons, filter) :
+      persons
+    
+    console.log(filteredList)
+    const personList = this.listPersons(filteredList);
     
     return (
       <div>
         <h2>Puhelinluettelo</h2>
+        rajaa näytettäviä <input onChange={this.handleFilter} />
+
+        <h3>Lisää uusi</h3>
         <form onSubmit={this.handleNewPerson}>
           <div>
             nimi: <input value={newName} onChange={this.updateName}/>
@@ -80,8 +100,8 @@ class App extends React.Component {
             <button type="submit">lisää</button>
           </div>
         </form>
-        <h2>Numerot</h2>
-        { this.listPersons(persons) }
+        <h3>Numerot</h3>
+        { personList }
       </div>
     )
   }
