@@ -1,20 +1,24 @@
 import React from 'react';
+import axios from 'axios';
 
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      persons: [
-        { name: 'Arto Hellas', number: '040-123456' },
-        { name: 'Martti Tienari', number: '040-123456' },
-        { name: 'Arto Järvinen', number: '040-123456' },
-        { name: 'Lea Kutvonen', number: '040-123456' }
-      ],
+      persons: [],
       newName: '',
       newNumber: '',
       filter: ''
     }
+  }
+
+  componentWillMount() {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(res => {
+        this.setState({persons: res.data})
+      })
   }
 
   updateName = (event) => {
@@ -58,8 +62,6 @@ class App extends React.Component {
   render() {
     const { persons, newName, newNumber, filter } = this.state;
     console.log(this.state)
-
-
     
     return (
       <div>
@@ -92,7 +94,7 @@ const SubmitButton = ({ name }) => (
   <div>
     <button type="submit">{name}</button>
   </div>
-)
+);
 
 const PersonForm = ({ 
     newName, 
@@ -122,7 +124,7 @@ const PersonTable = ({ persons }) => (
     )}
     </tbody>
   </table>
-)
+);
 
 const PersonList = ({ persons, filter }) => {
 
@@ -136,7 +138,7 @@ const PersonList = ({ persons, filter }) => {
       <PersonTable persons={filteredList} />
     </div>
   );
-}
+};
 
 
 export default App
