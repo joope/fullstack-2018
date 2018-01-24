@@ -29,8 +29,8 @@ class App extends React.Component {
   }
 
   updateNumber = (event) => {
-    const number = Number.parseInt(event.target.value, 10);
-    if (Number.isNaN(number)) return;
+    const number = event.target.value;
+    if (!number) return;
     this.setState({newNumber: number})
   }
 
@@ -47,14 +47,13 @@ class App extends React.Component {
     if (!newName || nameExists(newName) ) return; 
 
     const newPerson = { name: newName, number: newNumber };
-    this.setState(
-      ({ persons }) => {
-        return {
-          persons: persons.concat(newPerson),
-          newName: '',
-          newNumber: ''
-        }
-      }
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => this.setState({
+        persons: this.state.persons.concat(response.data),
+        newName: '',
+        newNumber: ''
+      })
     )
   }
 

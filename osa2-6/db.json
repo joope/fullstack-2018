@@ -19,6 +19,31 @@
       "name": "Lea Kutvonen",
       "number": "040-123456",
       "id": 4
+    },
+    {
+      "name": "antti",
+      "number": 12313345,
+      "id": 5
+    },
+    {
+      "name": "kantti",
+      "number": 86868668,
+      "id": 6
+    },
+    {
+      "name": "jaakko",
+      "number": "050.234234",
+      "id": 7
+    },
+    {
+      "name": "Mikä on kun",
+      "number": "133133",
+      "id": 8
+    },
+    {
+      "name": "joope",
+      "number": "13121313",
+      "id": 9
     }
   ]
 }
