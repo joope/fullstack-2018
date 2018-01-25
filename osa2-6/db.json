@@ -1,29 +1,19 @@
 {
   "persons": [
     {
-      "name": "Lea Kutvonen",
-      "number": "040-123456",
-      "id": 4
-    },
-    {
-      "name": "lisätään kutsu",
-      "number": "23123123123",
-      "id": 10
-    },
-    {
-      "name": "sfsdfsdf",
-      "number": "17272347",
-      "id": 11
-    },
-    {
-      "name": "lisätään",
-      "number": "12341234",
-      "id": 12
-    },
-    {
       "name": "sfdfsdf",
       "number": "2344565677897895",
       "id": 13
+    },
+    {
+      "name": "pate valkojärvi",
+      "number": "1123123123",
+      "id": 14
+    },
+    {
+      "name": "janne",
+      "number": "2650495683904658",
+      "id": 18
     }
   ]
 }

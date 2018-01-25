@@ -8,7 +8,8 @@ class App extends React.Component {
       persons: [],
       newName: '',
       newNumber: '',
-      filter: ''
+      filter: '',
+      notification: ''
     }
   }
 
@@ -55,6 +56,7 @@ korvataanko vanha numero uudella?`)) {
           newNumber: ''
         })
       )}
+      this.displayNotification(`päivitettiin ${oldPerson.name}:n numero`);
       return;
     }
 
@@ -66,9 +68,10 @@ korvataanko vanha numero uudella?`)) {
       .then(response => this.setState({
         persons: this.state.persons.concat(response.data),
         newName: '',
-        newNumber: ''
+        newNumber: '',
       })
     )
+    this.displayNotification(`lisättiin ${newPerson.name}`);
   }
 
   handleDelete = (id) => () => {
@@ -81,20 +84,29 @@ korvataanko vanha numero uudella?`)) {
           persons: this.state.persons.filter((person) => person.id !== id)
         }))
         .catch(err => console.log(err))
+      this.displayNotification(`poistettiin ${person.name}`);
     }
+    
   }
 
   handleFilter = event => {
     this.setState({filter: event.target.value});
   }
 
+  displayNotification = text => {
+    this.setState({ notification: text});
+    const cb = () => this.setState({notification: null});
+    window.setTimeout(cb, 2000);
+  }
+
   render() {
-    const { persons, newName, newNumber, filter } = this.state;
+    const { persons, newName, newNumber, filter, notification } = this.state;
     console.log(this.state)
     
     return (
       <div>
         <Header name="Puhelinluettelo" />
+        <Notification notification={notification} />
         <Input name='rajaa näytettäviä' onChange={this.handleFilter} />
         <PersonForm 
           newName={newName}
@@ -112,6 +124,13 @@ korvataanko vanha numero uudella?`)) {
 const Header = ({ name }) => (
     <h1>{name}</h1>
 );
+
+const Notification = ({ notification }) => {
+  return notification  
+    ? <div className='alert-success'>{notification}</div>
+    : null;
+}
+  
 
 const Input = ({ name, value, onChange }) => (
   <div>
