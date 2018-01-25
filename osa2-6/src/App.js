@@ -36,14 +36,29 @@ class App extends React.Component {
   nameExists = name => {
     return this.state.persons.find(
       person => person.name === name
-    ) !== undefined;
+    );
   }
 
   handleNewPerson = (event) => {
     event.preventDefault();
     const { newName, newNumber } = this.state;
 
-    if (!newName || this.nameExists(newName) ) return; 
+    const oldPerson = this.nameExists(newName);
+    if (oldPerson) {
+      if (window.confirm(`${oldPerson.name} on jo luettelossa, 
+korvataanko vanha numero uudella?`)) {
+        personService
+        .update(oldPerson.id, {...oldPerson, number: newNumber})
+        .then(response => this.setState({
+          persons: this.state.persons.map((person) => person.id === oldPerson.id ? response.data : person),
+          newName: '',
+          newNumber: ''
+        })
+      )}
+      return;
+    }
+
+    if (!newName) return; 
 
     const newPerson = { name: newName, number: newNumber };
     personService
