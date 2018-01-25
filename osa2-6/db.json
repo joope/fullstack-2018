@@ -1,39 +1,9 @@
 {
   "persons": [
     {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": 1
-    },
-    {
-      "name": "Martti Tienari",
-      "number": "040-123456",
-      "id": 2
-    },
-    {
-      "name": "Arto Järvinen",
-      "number": "040-123456",
-      "id": 3
-    },
-    {
       "name": "Lea Kutvonen",
       "number": "040-123456",
       "id": 4
-    },
-    {
-      "name": "antti",
-      "number": 12313345,
-      "id": 5
-    },
-    {
-      "name": "kantti",
-      "number": 86868668,
-      "id": 6
-    },
-    {
-      "name": "jaakko",
-      "number": "050.234234",
-      "id": 7
     },
     {
       "name": "Mikä on kun",
@@ -41,14 +11,19 @@
       "id": 8
     },
     {
-      "name": "joope",
-      "number": "13121313",
-      "id": 9
-    },
-    {
       "name": "lisätään kutsu",
       "number": "23123123123",
       "id": 10
+    },
+    {
+      "name": "sfsdfsdf",
+      "number": "17272347",
+      "id": 11
+    },
+    {
+      "name": "lisätään",
+      "number": "12341234",
+      "id": 12
     }
   ]
 }

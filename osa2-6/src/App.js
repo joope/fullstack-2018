@@ -33,17 +33,17 @@ class App extends React.Component {
     this.setState({newNumber: number})
   }
 
+  nameExists = name => {
+    return this.state.persons.find(
+      person => person.name === name
+    ) !== undefined;
+  }
+
   handleNewPerson = (event) => {
     event.preventDefault();
     const { newName, newNumber } = this.state;
 
-    const nameExists = name => {
-      return this.state.persons.find(
-        person => person.name === name
-      ) !== undefined;
-    }
-
-    if (!newName || nameExists(newName) ) return; 
+    if (!newName || this.nameExists(newName) ) return; 
 
     const newPerson = { name: newName, number: newNumber };
     personService
@@ -54,6 +54,19 @@ class App extends React.Component {
         newNumber: ''
       })
     )
+  }
+
+  handleDelete = (id) => () => {
+    const person = this.state.persons.find((person) => person.id === id);
+    
+    if (window.confirm(`poistetaanko ${person.name}?`)) {
+      personService
+        .deletePerson(id)
+        .then(() => this.setState({
+          persons: this.state.persons.filter((person) => person.id !== id)
+        }))
+        .catch(err => console.log(err))
+    }
   }
 
   handleFilter = event => {
@@ -75,7 +88,7 @@ class App extends React.Component {
           updateName={this.updateName}
           updateNumber={this.updateNumber}
         />
-        <PersonList persons={persons} filter={filter} />
+        <PersonList persons={persons} filter={filter} handleDelete={this.handleDelete}/>
       </div>
     )
   }
@@ -92,9 +105,7 @@ const Input = ({ name, value, onChange }) => (
 );
 
 const SubmitButton = ({ name }) => (
-  <div>
-    <button type="submit">{name}</button>
-  </div>
+  <button type="submit">{name}</button>
 );
 
 const PersonForm = ({ 
@@ -114,20 +125,21 @@ const PersonForm = ({
   </div>
 );
 
-const PersonTable = ({ persons }) => (
+const PersonTable = ({ persons, handleDelete }) => (
   <table>
     <tbody>
     { persons.map(person => 
       <tr key={person.name}>
         <td>{person.name}</td>
         <td>{person.number}</td>
+        <td><button onClick={handleDelete(person.id)} type="button">poista</button></td>
       </tr>
     )}
     </tbody>
   </table>
 );
 
-const PersonList = ({ persons, filter }) => {
+const PersonList = ({ persons, filter, handleDelete }) => {
 
   const filteredList = persons.filter(person => 
     person.name.toLowerCase().includes(filter.toLowerCase())
@@ -136,7 +148,7 @@ const PersonList = ({ persons, filter }) => {
   return (
     <div>
       <h3>Numerot</h3>
-      <PersonTable persons={filteredList} />
+      <PersonTable persons={filteredList} handleDelete={handleDelete} />
     </div>
   );
 };
