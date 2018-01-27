@@ -50,12 +50,21 @@ class App extends React.Component {
 korvataanko vanha numero uudella?`)) {
         personService
         .update(oldPerson.id, {...oldPerson, number: newNumber})
-        .then(response => this.setState({
-          persons: this.state.persons.map((person) => person.id === oldPerson.id ? response.data : person),
-          newName: '',
-          newNumber: ''
+        .then(response => {
+          this.setState({
+            persons: this.state.persons.map((person) => person.id === oldPerson.id ? response.data : person),
+            newName: '',
+            newNumber: ''
+          })
         })
-      )}
+        .catch(err => {
+          this.displayNotification(`${oldPerson.name} on jo poistettu listasta!`);
+          this.setState({
+            persons: this.state.persons.filter((person) => person.id !== oldPerson.id)
+          })
+          return;
+        })
+      }
       this.displayNotification(`päivitettiin ${oldPerson.name}:n numero`);
       return;
     }
@@ -106,7 +115,7 @@ korvataanko vanha numero uudella?`)) {
     return (
       <div>
         <Header name="Puhelinluettelo" />
-        <Notification notification={notification} />
+        <Notification message={notification} />
         <Input name='rajaa näytettäviä' onChange={this.handleFilter} />
         <PersonForm 
           newName={newName}
@@ -125,9 +134,9 @@ const Header = ({ name }) => (
     <h1>{name}</h1>
 );
 
-const Notification = ({ notification }) => {
-  return notification  
-    ? <div className='alert-success'>{notification}</div>
+const Notification = ({ message }) => {
+  return message  
+    ? <div className='alert-success'>{message}</div>
     : null;
 }
   
