@@ -1,0 +1,8 @@
+.alert-success {
+    background-color: green;
+    opacity: 1;
+    transition: opacity 1s;
+
+    padding: 7px;
+    border: 1px solid black;
+}
