@@ -33,7 +33,12 @@ const reducer = (state = initialState, action) => {
         }
         return a
       })
-  
+    case 'ADD': 
+      return state.concat({
+        content: action.anecdote,
+        id: getId(),
+        votes: 0
+      })
     default:
       break;
   }
