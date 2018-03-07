@@ -1,42 +1,27 @@
 import React from 'react'
+import Filter from './Filter'
+import { connect } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { showNotification, hideNotification } from '../reducers/notificationReducer'
 
 class AnecdoteList extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      filter: ''
-    }
-  }
 
   handleVote = (anecdote) => () => {
-    const { store } = this.props
-    store.dispatch(voteAnecdote(anecdote))
-    store.dispatch(showNotification(`you voted '${anecdote.content}`))
+    this.props.voteAnecdote(anecdote)
+    this.props.showNotification(`you voted '${anecdote.content}`)
     window.setTimeout(() => {
-      store.dispatch(hideNotification())
+      this.props.hideNotification()
     }, 5000)
   }
 
-  handleInput = (event) => {
-    this.setState({filter: event.target.value})
-  }
-
   render() {
-    const { filter } = this.state
-    const { anecdotes } = this.props.store.getState()
-    const filtered = anecdotes.filter((a) => a.content.toLowerCase().includes(filter))
+    const { anecdotes=[], filter='' } = this.props
+
     return (
       <div>
         <h2>Anecdotes</h2>
-        <input 
-          type='text'
-          placeholder='filter' 
-          onChange={this.handleInput}
-          value={this.state.filter}
-        />
-        {filtered.sort((a, b) => b.votes - a.votes).map(anecdote =>
+        <Filter />
+        {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
           <div key={anecdote.id}>
             <div>
               {anecdote.content}
@@ -54,4 +39,19 @@ class AnecdoteList extends React.Component {
   }
 }
 
-export default AnecdoteList
+const filterAnecdotes = (anecdotes, filter) => {
+  return anecdotes.filter((a) => a.content.toLowerCase().includes(filter))
+}
+
+const mapStateToProps = (state) => { 
+  return {
+    anecdotes: filterAnecdotes(state.anecdotes, state.filter),
+  }
+}
+const mapDispatchToProps = {
+    voteAnecdote, 
+    showNotification,
+    hideNotification
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnecdoteList)
