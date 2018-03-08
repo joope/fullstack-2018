@@ -15,7 +15,7 @@ class AnecdoteList extends React.Component {
   }
 
   render() {
-    const { anecdotes=[], filter='' } = this.props
+    const { anecdotes=[] } = this.props
 
     return (
       <div>
